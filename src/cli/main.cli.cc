@@ -2,9 +2,11 @@
 
 #include <iostream>
 
+#include "test.cli.h"
 #include "ds.cli.h"
 
 MainCLI::MainCLI() : CLI{"", {
+    new TestCLI{"dsa"},
     new DSCLI
 }} {
 }
