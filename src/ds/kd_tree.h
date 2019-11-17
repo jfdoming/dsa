@@ -53,7 +53,7 @@ class KDTree {
                     return **n;
                 }
 
-                Iterator<U> next() const {
+                Iterator<U> operator++() const {
                     return next_impl(n);
                 };
             private:
@@ -134,6 +134,10 @@ class KDTree {
 
         Iterator<T> find(const Point<T> &p) const {
             return find_impl(p, root, 0);
+        }
+
+        Iterator<T> begin() const {
+            return root;
         }
 
         Iterator<T> end() const {
