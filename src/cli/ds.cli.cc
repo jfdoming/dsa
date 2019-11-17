@@ -3,12 +3,13 @@
 #include <iostream>
 
 #include "test.cli.h"
+#include "kd.cli.h"
 
 using namespace std;
 
-DSCLI::DSCLI() : CLI{"ds", {new TestCLI{"ds"}}} {
+DSCLI::DSCLI() : CLI{"ds", {new TestCLI{"ds"}, new KDCLI}} {
 }
 
 void DSCLI::eachRun() {
-    cout << "Enter one of : " << flush;
+    cout << "Enter one of kd: " << flush;
 }
