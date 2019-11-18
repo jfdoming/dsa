@@ -10,20 +10,20 @@ void kd_test_basic() {
     KDTree<int> tree{5};
 
     // Test initial state.
-    TEST_ASSERT_EQUAL(tree.size(), 0);
-    TEST_ASSERT_EQUAL(tree.find({1, 2, 3, 4, 5}), tree.end());
+    TEST_ASSERT_EQUAL(tree.size(), 0u);
+    TEST_ASSERT_EQUAL_Q(tree.find({1, 2, 3, 4, 5}), tree.end());
 
     // Test insertion.
     tree.insert({1, 2, 3, 4, 5});
-    TEST_ASSERT_EQUAL(tree.size(), 1);
+    TEST_ASSERT_EQUAL(tree.size(), 1u);
     const auto &it = tree.find({1, 2, 3, 4, 5});
     TEST_ASSERT_NOT_EQUAL(it, tree.end());
     TEST_ASSERT_EQUAL(*it, (Point<int>{1, 2, 3, 4, 5}));
 
     // Test deletion.
     tree.remove({1, 2, 3, 4, 5});
-    TEST_ASSERT_EQUAL(tree.size(), 0);
-    TEST_ASSERT_EQUAL(tree.find({1, 2, 3, 4, 5}), tree.end());
+    TEST_ASSERT_EQUAL(tree.size(), 0u);
+    TEST_ASSERT_EQUAL_Q(tree.find({1, 2, 3, 4, 5}), tree.end());
 }
 
 void assert_list_matches(const KDTree<int> &tree,
@@ -38,7 +38,7 @@ void assert_list_matches(const KDTree<int> &tree,
         ++listIt;
     }
 
-    TEST_ASSERT_EQUAL(it, tree.end());
+    TEST_ASSERT_EQUAL_Q(it, tree.end());
 }
 
 void kd_test_insertion() {
