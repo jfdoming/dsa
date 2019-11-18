@@ -53,7 +53,7 @@ class KDTree {
                     return **n;
                 }
 
-                Iterator<U> operator++() const {
+                Iterator<U> operator++() {
                     return next_impl(n);
                 };
             private:
@@ -62,7 +62,7 @@ class KDTree {
                     : n{n}, parent{parent}, visited{visited} {
                 }
 
-                Iterator<U> next_impl(Node<U> *current) const {
+                Iterator<U> next_impl(Node<U> *current) {
                     if (current->left) {
                         if (visited.find(current->left) == visited.end()) {
                             visited.insert(current);
