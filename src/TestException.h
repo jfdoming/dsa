@@ -6,9 +6,10 @@
 
 class TestException : public std::exception {
     public:
-        const char *what() const throw() final override;
+        const char *what() const noexcept final override;
     protected:
-        virtual std::string message() const = 0;
+        void set_message(const std::string &new_message);
+        std::string message;
 };
 
 #endif

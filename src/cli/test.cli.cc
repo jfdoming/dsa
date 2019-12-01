@@ -6,8 +6,14 @@
 
 using namespace std;
 
-TestCLI::TestCLI(const string &moduleName, const function<void(void)> &test)
-    : CLI{"test"}, moduleName{moduleName}, test{test} {
+TestCLI::TestCLI(const string &moduleName,
+        const function<void(void)> &test)
+    : CLI{"test"}, moduleName{moduleName}, tests{{test}} {
+    }
+
+TestCLI::TestCLI(const string &moduleName,
+        const initializer_list<function<void(void)>> &tests)
+    : CLI{"test"}, moduleName{moduleName}, tests{tests} {
     }
 
 CLI::Status TestCLI::beforeRun(CLI *parent) {
@@ -24,12 +30,14 @@ CLI::Status TestCLI::beforeRun(CLI *parent) {
         });
     }
 
-    if (test) {
-        try {
-            test();
-        } catch (const TestException &e) {
-            cerr << e.what() << endl;
-            ++failures;
+    for (auto &test : tests) {
+        if (test) {
+            try {
+                test();
+            } catch (const TestException &e) {
+                cerr << e.what() << endl;
+                ++failures;
+            }
         }
     }
 

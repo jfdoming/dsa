@@ -6,6 +6,8 @@
 #include "test.h"
 #include "ds/kd_tree.h"
 
+using namespace std;
+
 void kd_test_basic() {
     KDTree<int> tree{5};
 
@@ -17,7 +19,7 @@ void kd_test_basic() {
     tree.insert({1, 2, 3, 4, 5});
     TEST_ASSERT_EQUAL(tree.size(), 1u);
     const auto &it = tree.find({1, 2, 3, 4, 5});
-    TEST_ASSERT_NOT_EQUAL(it, tree.end());
+    TEST_ASSERT_NOT_EQUAL_Q(it, tree.end());
     TEST_ASSERT_EQUAL(*it, (Point<int>{1, 2, 3, 4, 5}));
 
     // Test deletion.
@@ -31,7 +33,7 @@ void assert_list_matches(const KDTree<int> &tree,
     auto it = tree.begin();
     auto listIt = list.begin();
     while (listIt != list.end()) {
-        TEST_ASSERT_NOT_EQUAL(it, tree.end());
+        TEST_ASSERT_NOT_EQUAL_Q(it, tree.end());
         TEST_ASSERT_EQUAL(*it, *listIt);
 
         ++it;
@@ -50,20 +52,20 @@ void kd_test_insertion() {
 
     {
         const auto &it = tree.find({1, 2, 3, 4, 5});
-        TEST_ASSERT_NOT_EQUAL(it, tree.end());
-        TEST_ASSERT_EQUAL(*it, (Point<int>{1, 2, 3, 4, 5}));
+        TEST_ASSERT_NOT_EQUAL_Q(it, tree.end());
+        TEST_ASSERT_EQUAL((Point<int>{1, 2, 3, 4, 5}), *it);
     }
 
     {
         const auto &it = tree.find({5, 4, 3, 2, 1});
-        TEST_ASSERT_NOT_EQUAL(it, tree.end());
-        TEST_ASSERT_EQUAL(*it, (Point<int>{5, 4, 3, 2, 1}));
+        TEST_ASSERT_NOT_EQUAL_Q(it, tree.end());
+        TEST_ASSERT_EQUAL((Point<int>{5, 4, 3, 2, 1}), *it);
     }
 
     {
         const auto &it = tree.find({5, 4, 3, 2, 1});
-        TEST_ASSERT_NOT_EQUAL(it, tree.end());
-        TEST_ASSERT_EQUAL(*it, (Point<int>{5, 4, 3, 2, 1}));
+        TEST_ASSERT_NOT_EQUAL_Q(it, tree.end());
+        TEST_ASSERT_EQUAL((Point<int>{5, 4, 3, 2, 1}), *it);
     }
 
     // Test iteration order.
@@ -75,10 +77,4 @@ void kd_test_insertion() {
 }
 
 void kd_test_deletion() {
-}
-
-void kd_test() {
-    kd_test_basic();
-    kd_test_insertion();
-    kd_test_deletion();
 }

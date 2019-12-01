@@ -7,11 +7,7 @@
 
 class AssertionException : public TestException {
     public:
-        AssertionException(const std::string &errorMessage);
-    protected:
-        std::string message() const override;
-    private:
-        std::string errorMessage;
+        AssertionException(const std::string &error_message);
 };
 
 #endif
