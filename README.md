@@ -4,8 +4,9 @@ Implementations of various data structures and algorithms for the purpose of lea
 ## Installation
 To play around with the modules and run tests, run the following commands (prerequisites: install `git`, `g++`, and `make`):
 1. `git clone https://github.com/jfdoming/dsa`
-2. `make`
-3. `./dsa`
+2. `cd dsa`
+3. `make`
+4. `./dsa`
 
 Then follow the prompts.
 
