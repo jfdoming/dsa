@@ -3,6 +3,7 @@
 
 void kd_test_basic();
 void kd_test_insertion();
+void kd_test_iteration();
 void kd_test_deletion();
 
 #endif

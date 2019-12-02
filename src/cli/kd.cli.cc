@@ -12,6 +12,7 @@ KDCLI::KDCLI() : CLI{"kd",
         new TestCLI{"kd", {
             kd_test_basic,
             kd_test_insertion,
+            kd_test_iteration,
             kd_test_deletion
         }}
     }

@@ -58,7 +58,7 @@ class KDTree {
                     while (true) {
                         if (curr) {
                             stack.push(curr);
-                            curr = n = curr->left;
+                            curr = curr->left;
                         } else {
                             if (stack.empty()) {
                                 // We've reached the end.
@@ -66,9 +66,9 @@ class KDTree {
                                 break;
                             }
 
-                            curr = n = stack.top();
+                            n = stack.top();
                             stack.pop();
-                            curr = curr->right;
+                            curr = n->right;
 
                             // Visit the current node.
                             break;
@@ -79,6 +79,12 @@ class KDTree {
                 };
             private:
                 Iterator(Node<U> *n) : n{n}, curr{n} {
+                    operator++();
+                }
+
+                Iterator(Node<U> *n, Node<U> *curr,
+                        const std::stack<Node<U> *> &stack)
+                    : n{n}, curr{curr}, stack{stack} {
                 }
 
                 Node<U> *n;
@@ -118,11 +124,16 @@ class KDTree {
         }
 
         Iterator<T> find(const Point<T> &p) const {
-            return find_impl(p, root, 0);
+            std::stack<Node<T> *> stack;
+            auto node = find_impl(p, root, 0, stack);
+            if (!node) {
+                return end();
+            }
+            return {node, node->right, stack};
         }
 
         Iterator<T> begin() const {
-            return ++Iterator<T>{root};
+            return root;
         }
 
         Iterator<T> end() const {
@@ -210,7 +221,8 @@ class KDTree {
             return n;
         }
 
-        Node<T> *find_impl(const Point<T> &p, Node<T> *n, size_t d) const {
+        Node<T> *find_impl(const Point<T> &p, Node<T> *n, size_t d,
+                std::stack<Node<T> *> &stack) const {
             if (!n) {
                 return nullptr;
             }
@@ -221,9 +233,10 @@ class KDTree {
 
             size_t i = d % k;
             if (p[i] >= n->p[i]) {
-                return find_impl(p, n->right, d + 1);
+                return find_impl(p, n->right, d + 1, stack);
             } else {
-                return find_impl(p, n->left, d + 1);
+                stack.push(n);
+                return find_impl(p, n->left, d + 1, stack);
             }
         }
 };
