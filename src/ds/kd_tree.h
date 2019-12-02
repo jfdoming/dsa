@@ -2,7 +2,7 @@
 #define KD_TREE_H
 
 #include <vector>
-#include <set>
+#include <stack>
 
 template <typename T>
 using Point = std::vector<T>;
@@ -54,37 +54,36 @@ class KDTree {
                 }
 
                 Iterator<U> operator++() {
-                    return next_impl(n);
+                    n = curr;
+                    while (true) {
+                        if (curr) {
+                            stack.push(curr);
+                            curr = n = curr->left;
+                        } else {
+                            if (stack.empty()) {
+                                // We've reached the end.
+                                n = nullptr;
+                                break;
+                            }
+
+                            curr = n = stack.top();
+                            stack.pop();
+                            curr = curr->right;
+
+                            // Visit the current node.
+                            break;
+                        }
+                    }
+
+                    return *this;
                 };
             private:
-                Iterator(Node<U> *n, Node<U> *parent = nullptr,
-                        const std::set<Node<U> *> &visited = {})
-                    : n{n}, parent{parent}, visited{visited} {
-                }
-
-                Iterator<U> next_impl(Node<U> *current) {
-                    if (current->left) {
-                        if (visited.find(current->left) == visited.end()) {
-                            visited.insert(current);
-                            return {current->left, current, visited};
-                        }
-                    }
-                    if (current->right) {
-                        if (visited.find(current->right) == visited.end()) {
-                            visited.insert(current);
-                            return {current->right, current, visited};
-                        }
-                    }
-
-                    if (parent) {
-                        return next_impl(parent);
-                    }
-                    return nullptr;
+                Iterator(Node<U> *n) : n{n}, curr{n} {
                 }
 
                 Node<U> *n;
-                Node<U> *parent;
-                std::set<Node<U> *> visited;
+                Node<U> *curr;
+                std::stack<Node<U> *> stack;
 
                 friend class KDTree;
         };
@@ -107,22 +106,8 @@ class KDTree {
             }
         }
 
-        Node<T> *min_at(Node<T> *n, int d) {
-            if (!n) {
-                return nullptr;
-            }
-
-            auto *left_min = min_at(n->left, d + 1);
-            auto *right_min = min_at(n->right, d + 1);
-            if (!left_min) {
-                return right_min;
-            }
-            if (!right_min) {
-                return left_min;
-            }
-
-            size_t i = d % k;
-            return left_min->p[i] < right_min->p[i] ? left_min : right_min;
+        Node<T> *min_at(Node<T> *n, size_t d) {
+            return min_at_impl(n, d, d);
         }
 
         void remove(const Point<T> &p) {
@@ -137,7 +122,7 @@ class KDTree {
         }
 
         Iterator<T> begin() const {
-            return root;
+            return ++Iterator<T>{root};
         }
 
         Iterator<T> end() const {
@@ -165,6 +150,32 @@ class KDTree {
             }
 
             return n;
+        }
+
+        Node<T> *min_at_impl(Node<T> *n, size_t d, size_t cd) {
+            if (!n) {
+                return nullptr;
+            }
+
+            size_t i = cd % k;
+            if (i == d) {
+                auto *left_min = min_at_impl(n->left, d, cd + 1);
+                if (left_min) {
+                    return left_min;
+                }
+                return n;
+            }
+
+            auto *left_min = min_at_impl(n->left, d, cd + 1);
+            auto *right_min = min_at_impl(n->right, d, cd + 1);
+            if (!left_min) {
+                return right_min;
+            }
+            if (!right_min) {
+                return left_min;
+            }
+
+            return left_min->p[i] < right_min->p[i] ? left_min : right_min;
         }
 
         Node<T> *remove_impl(const Point<T> &p, Node<T> *n, size_t d) {
