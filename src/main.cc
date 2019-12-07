@@ -1,4 +1,4 @@
-#include "cli/main.cli.h"
+#include "main.cli.h"
 
 int main() {
     return MainCLI{}.run();

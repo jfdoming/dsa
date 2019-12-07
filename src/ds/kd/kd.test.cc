@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "test.h"
-#include "ds/kd_tree.h"
+#include "ds/kd/kd_tree.h"
 
 using namespace std;
 

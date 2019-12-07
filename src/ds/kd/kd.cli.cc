@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "test.cli.h"
-#include "test/kd.test.h"
+#include "kd.test.h"
 
 using namespace std;
 
