@@ -25,9 +25,7 @@ std::ostream &operator<<(std::ostream &out, const std::vector<T> &v) {
     return out;
 }
 
-void _log_prefix(std::ostringstream &oss, const char *file, int line) {
-    oss << "\t" << "at " << file << ":" << line << ": ";
-}
+void _log_prefix(std::ostringstream &oss, const char *file, int line);
 
 template <typename T, typename U>
 void test_assert_equal(T t, U u, const char *file, int line, const char *arg) {
