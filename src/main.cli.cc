@@ -4,10 +4,12 @@
 
 #include "test.cli.h"
 #include "ds/ds.cli.h"
+#include "a/a.cli.h"
 
 MainCLI::MainCLI() : CLI{"", {
     new TestCLI{"dsa"},
-    new DSCLI
+    new DSCLI,
+    new ACLI
 }} {
 }
 
