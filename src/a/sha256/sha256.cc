@@ -7,8 +7,13 @@
 
 using namespace std;
 
-// This implementation used http://www.iwar.org.uk/comsec/resources/cipher/sha256-384-512.pdf
-// as a reference.
+// This implementation used
+//   http://www.iwar.org.uk/comsec/resources/cipher/sha256-384-512.pdf
+// as a reference as well as for some basic test cases. It also made use of
+//   https://emn178.github.io/online-tools/sha256.html
+// to generate more test cases, as well as
+//   https://csrc.nist.gov/csrc/media/projects/cryptographic-standards-and-guidelines/documents/examples/sha256.pdf
+// for debugging purposes.
 
 const size_t BLOCK_SIZE_IN_BITS = 512;
 const size_t BLOCK_SIZE_IN_CHARS = BLOCK_SIZE_IN_BITS / CHAR_BIT;
